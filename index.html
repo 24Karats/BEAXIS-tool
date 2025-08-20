@@ -258,7 +258,7 @@
                 if (userFootWidth > standardWidth) {
                     const biggerSize = getAdjacentSize(primaryMatch.size, 1);
                     // **修改點**: 加入標準腳寬提示
-                    alternativeHTML += `<li><p><span class="font-semibold text-orange-600">腳板偏寬:</span> 您的腳寬(${userFootWidth}cm)大於此尺寸標準值(${standardWidth}cm)，建議選擇 <strong class="text-orange-600">${biggerSize}</strong></p></li>`;
+                    alternativeHTML += `<li><p><span class="font-semibold text-orange-600">腳板偏寬:</span> 您的腳寬(${userFootWidth}cm)大於此尺寸標準值(${standardWidth}cm)，此鞋款炫頭較窄，若追求腳感寬鬆建議選擇 <strong class="text-orange-600">${biggerSize}</strong></p></li>`;
                     footWidthRecommendationShown = true;
                 }
             }
