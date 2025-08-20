@@ -93,7 +93,7 @@
     </div>
 
 <script>
-    // --- 資料庫 (已根據最新對照表修正) ---
+    // --- 資料庫 ---
     const egyptianFootChart = [
         { us_men: 4.5, us_women: 6, uk: 4, eu: 36.5, cm: 22.4, size: 'S', foot_width: 7.7 },
         { us_men: 5, us_women: 6.5, uk: 4.5, eu: 37.5, cm: 22.9, size: 'S', foot_width: 7.7 },
@@ -250,44 +250,49 @@
 
             // 產生並顯示進階建議
             let alternativeHTML = '<div class="fade-in mt-6 pt-6 border-t border-gray-200"><h5 class="text-lg font-semibold text-gray-700 text-center mb-4">進階尺寸建議</h5><ul class="space-y-3 text-sm text-left">';
+            let footWidthRecommendationShown = false;
             
             // 腳寬建議
             if (!isNaN(userFootWidth) && userFootWidth > 0) {
                 const standardWidth = primaryMatch.foot_width;
                 if (userFootWidth > standardWidth) {
                     const biggerSize = getAdjacentSize(primaryMatch.size, 1);
-                    alternativeHTML += `<li><p><span class="font-semibold text-orange-600">腳板偏寬:</span> 您的腳寬(${userFootWidth}cm)大於標準值，建議選擇 <strong class="text-orange-600">${biggerSize}</strong></p></li>`;
+                    // **修改點**: 加入標準腳寬提示
+                    alternativeHTML += `<li><p><span class="font-semibold text-orange-600">腳板偏寬:</span> 您的腳寬(${userFootWidth}cm)大於此尺寸標準值(${standardWidth}cm)，建議選擇 <strong class="text-orange-600">${biggerSize}</strong></p></li>`;
+                    footWidthRecommendationShown = true;
                 }
             }
 
-            // 穿著感建議
-            let step;
-            if (sizeSystem === 'eu') { step = 0.5; } 
-            else if (sizeSystem === 'cm') { step = 0.1; }
-            else { step = 0.5; }
+            // **修改點**: 只有在沒有腳寬建議時，才顯示穿著感建議
+            if (!footWidthRecommendationShown) {
+                let step;
+                if (sizeSystem === 'eu') { step = 0.5; } 
+                else if (sizeSystem === 'cm') { step = 0.1; }
+                else { step = 0.5; }
 
-            const nextStandardSize = userSize + step;
-            const looseMatchForCheck = findBestMatch(nextStandardSize, sizeSystem, chart);
-            
-            const prevStandardSize = userSize - step;
-            const snugMatchForCheck = findBestMatch(prevStandardSize, sizeSystem, chart);
+                const nextStandardSize = userSize + step;
+                const looseMatchForCheck = findBestMatch(nextStandardSize, sizeSystem, chart);
+                
+                const prevStandardSize = userSize - step;
+                const snugMatchForCheck = findBestMatch(prevStandardSize, sizeSystem, chart);
 
-            const isLooseSame = looseMatchForCheck && looseMatchForCheck.size === primaryMatch.size;
-            const isSnugSame = snugMatchForCheck && snugMatchForCheck.size === primaryMatch.size;
+                const isLooseSame = looseMatchForCheck && looseMatchForCheck.size === primaryMatch.size;
+                const isSnugSame = snugMatchForCheck && snugMatchForCheck.size === primaryMatch.size;
 
-            if (isLooseSame && isSnugSame) {
-                alternativeHTML += `<li><p><span class="font-semibold">穿著感:</span> 您的尺寸位於標準範圍，尺寸剛好無須調整。</p></li>`;
-            } else {
-                if (!isLooseSame) {
-                     alternativeHTML += `<li><p><span class="font-semibold">想要寬鬆感:</span> 建議選擇 <strong class="text-gray-800">${looseMatchForCheck.size}</strong></p></li>`;
+                if (isLooseSame && isSnugSame) {
+                    alternativeHTML += `<li><p><span class="font-semibold">穿著感:</span> 您的尺寸位於標準範圍，尺寸剛好無須調整。</p></li>`;
                 } else {
-                     alternativeHTML += `<li><p><span class="font-semibold">想要寬鬆感:</span> 目前尺寸已較寬鬆，無須調整</p></li>`;
-                }
+                    if (!isLooseSame) {
+                         alternativeHTML += `<li><p><span class="font-semibold">想要寬鬆感:</span> 建議選擇 <strong class="text-gray-800">${looseMatchForCheck.size}</strong></p></li>`;
+                    } else {
+                         alternativeHTML += `<li><p><span class="font-semibold">想要寬鬆感:</span> 目前尺寸已較寬鬆，無須調整</p></li>`;
+                    }
 
-                if (!isSnugSame) {
-                     alternativeHTML += `<li><p><span class="font-semibold">想要合腳感:</span> 建議選擇 <strong class="text-gray-800">${snugMatchForCheck.size}</strong></p></li>`;
-                } else {
-                     alternativeHTML += `<li><p><span class="font-semibold">想要合腳感:</span> 目前尺碼已較合腳，無須調整</p></li>`;
+                    if (!isSnugSame) {
+                         alternativeHTML += `<li><p><span class="font-semibold">想要合腳感:</span> 建議選擇 <strong class="text-gray-800">${snugMatchForCheck.size}</strong></p></li>`;
+                    } else {
+                         alternativeHTML += `<li><p><span class="font-semibold">想要合腳感:</span> 目前尺碼已較合腳，無須調整</p></li>`;
+                    }
                 }
             }
 
