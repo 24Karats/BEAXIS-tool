@@ -30,56 +30,62 @@
             <p class="mt-2 text-gray-500">透過您習慣的尺碼，找到最適合的日日鞋尺寸。</p>
         </div>
 
-        <div class="mt-8 space-y-6">
-            <!-- 步驟一：選擇腳型 -->
-            <div>
-                <label for="foot-type" class="block text-sm font-medium text-gray-700">1. 選擇您的腳型</label>
-                <select id="foot-type" name="foot-type" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md shadow-sm">
-                    <option value="埃及腳">埃及腳 (大拇指最長)</option>
-                    <option value="希臘腳">希臘腳 (第二根腳趾最長)</option>
-                </select>
-                <img src="https://i.postimg.cc/rmQVncR4/main-29.png" alt="腳型示意圖" class="mt-4 rounded-lg mx-auto w-full max-w-xs" onerror="this.style.display='none'">
-            </div>
+        <form id="size-form" onsubmit="event.preventDefault(); getRecommendation();">
+            <div class="mt-8 space-y-6">
+                <!-- 步驟一：選擇腳型 -->
+                <div>
+                    <label for="foot-type" class="block text-sm font-medium text-gray-700">1. 選擇您的腳型</label>
+                    <select id="foot-type" name="foot-type" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md shadow-sm">
+                        <option value="" disabled selected>請選擇您的腳型</option>
+                        <option value="egyptian">埃及腳 (大拇指最長)</option>
+                        <option value="greek">希臘腳 (第二根腳趾最長)</option>
+                    </select>
+                    <img src="https://i.postimg.cc/rmQVncR4/main-29.png" alt="腳型示意圖" class="mt-4 rounded-lg mx-auto w-full max-w-xs" onerror="this.style.display='none'">
+                </div>
 
-            <!-- 步驟二：選擇尺碼規格 -->
-            <div>
-                <label for="size-system" class="block text-sm font-medium text-gray-700">2. 選擇您習慣的尺碼規格</label>
-                <select id="size-system" name="size-system" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md shadow-sm">
-                    <option value="JP">日本 (JP / cm)</option>
-                    <option value="EU">歐規 (EU)</option>
-                    <option value="US_Men">美規男性 (US Men)</option>
-                    <option value="US_Women">美規女性 (US Women)</option>
-                    <option value="UK">英規 (UK)</option>
-                </select>
-            </div>
+                <!-- 步驟二：選擇尺碼規格 -->
+                <div>
+                    <label for="size-system" class="block text-sm font-medium text-gray-700">2. 選擇您習慣的尺碼規格</label>
+                    <select id="size-system" name="size-system" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md shadow-sm">
+                        <option value="" disabled selected>請選擇尺碼規格</option>
+                        <option value="cm">日規（cm）</option>
+                        <option value="us_men">美規男性 (US Men)</option>
+                        <option value="us_women">美規女性 (US Women)</option>
+                        <option value="uk">英規 (UK)</option>
+                        <option value="eu">歐規 (EU)</option>
+                    </select>
+                </div>
 
-            <!-- 步驟三：選擇尺碼 -->
-            <div>
-                <label for="size-value-select" class="block text-sm font-medium text-gray-700">3. 選擇您的尺碼</label>
-                <select id="size-value-select" name="size-value-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md shadow-sm">
-                    <!-- 選項將由 JavaScript 動態生成 -->
-                </select>
+                <!-- 步驟三：選擇尺碼 -->
+                <div>
+                    <label for="size-value-select" class="block text-sm font-medium text-gray-700">3. 選擇您的尺碼</label>
+                    <select id="size-value-select" name="size-value-select" required class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md shadow-sm">
+                        <option value="" disabled selected>請先選擇尺碼規格</option>
+                    </select>
+                </div>
+
+                <!-- 步驟四：腳寬輸入 -->
+                <div>
+                    <label for="foot-width-input" class="block text-sm font-medium text-gray-700">4. 您的腳寬(公分) <span class="text-gray-400">(選填)</span></label>
+                    <input type="number" step="0.1" id="foot-width-input" name="foot-width-input" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm" placeholder="例如: 8.5">
+                    <!-- 動態腳寬圖片容器 -->
+                    <div id="foot-width-image-container" class="mt-4"></div>
+                </div>
             </div>
             
-            <!-- 步驟四：腳寬輸入 -->
-            <div>
-                <label for="foot-width-input" class="block text-sm font-medium text-gray-700">4. 您的腳寬(公分) <span class="text-gray-400">(選填)</span></label>
-                <input type="number" step="0.1" id="foot-width-input" name="foot-width-input" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm" placeholder="例如: 8.5">
+            <!-- 按鈕 -->
+            <div class="mt-8">
+                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200">
+                    取得推薦尺寸
+                </button>
             </div>
-        </div>
-        
-        <!-- 按鈕 -->
-        <div class="mt-8">
-            <button onclick="getRecommendation()" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors duration-200">
-                取得推薦尺寸
-            </button>
-        </div>
+        </form>
 
         <!-- 推薦結果 -->
-        <div id="recommendation-container" class="mt-8 text-center min-h-[100px]">
+        <div id="recommendation-container" class="mt-8 text-center min-h-[120px]">
             <!-- 主要結果會動態插入此處 -->
         </div>
-        
+
         <!-- 進階建議 -->
         <div id="alternative-recommendations" class="mt-4">
             <!-- 進階建議會動態插入此處 -->
@@ -87,30 +93,60 @@
     </div>
 
 <script>
-    // 這是經過處理與轉換後的尺寸數據
-    const shoeData = [
-        {"品牌": "BEAXIS", "鞋款": "日日鞋", "規格": "JP(cm)", "腳型": "埃及腳", "尺寸": "S", "最小腳長": 22.5, "最大腳長": 23.0, "鞋內腳長": 23.5, "腳寬": 7.7, "腳圍": 22.0, "備註": "示例數據，請以正式表為準", "US_Men": 5.5, "US_Women": 6.5, "UK": 5.0, "EU": 37.0},
-        {"品牌": "BEAXIS", "鞋款": "日日鞋", "規格": "JP(cm)", "腳型": "埃及腳", "尺寸": "M", "最小腳長": 23.5, "最大腳長": 24.0, "鞋內腳長": 24.5, "腳寬": 7.9, "腳圍": 22.7, "備註": "示例數據，請以正式表為準", "US_Men": 6.5, "US_Women": 7.5, "UK": 6.0, "EU": 38.0},
-        {"品牌": "BEAXIS", "鞋款": "日日鞋", "規格": "JP(cm)", "腳型": "埃及腳", "尺寸": "L", "最小腳長": 24.0, "最大腳長": 25.0, "鞋內腳長": 25.0, "腳寬": 8.1, "腳圍": 23.0, "備註": "示例數據，請以正式表為準", "US_Men": 7.0, "US_Women": 8.0, "UK": 6.5, "EU": 39.0},
-        {"品牌": "BEAXIS", "鞋款": "日日鞋", "規格": "JP(cm)", "腳型": "埃及腳", "尺寸": "LL", "最小腳長": 25.5, "最大腳長": 26.0, "鞋內腳長": 27.0, "腳寬": 8.3, "腳圍": 24.7, "備註": "示例數據，請以正式表為準", "US_Men": 9.5, "US_Women": 10.5, "UK": 9.0, "EU": 42.0},
-        {"品牌": "BEAXIS", "鞋款": "日日鞋", "規格": "JP(cm)", "腳型": "埃及腳", "尺寸": "3L", "最小腳長": 26.5, "最大腳長": 27.5, "鞋內腳長": 28.0, "腳寬": 8.5, "腳圍": 25.5, "備註": "示例數據，請以正式表為準", "US_Men": 11.0, "US_Women": 12.0, "UK": 10.5, "EU": 44.0},
-        {"品牌": "BEAXIS", "鞋款": "日日鞋", "規格": "JP(cm)", "腳型": "埃及腳", "尺寸": "4L", "最小腳長": 27.5, "最大腳長": 28.0, "鞋內腳長": 29.0, "腳寬": 8.7, "腳圍": 26.2, "備註": "示例數據，請以正式表為準", "US_Men": 12.0, "US_Women": 13.0, "UK": 11.5, "EU": 45.0},
-        {"品牌": "BEAXIS", "鞋款": "日日鞋", "規格": "JP(cm)", "腳型": "希臘腳", "尺寸": "S", "最小腳長": 22.5, "最大腳長": 23.0, "鞋內腳長": 23.5, "腳寬": 7.7, "腳圍": 22.0, "備註": "示例數據，請以正式表為準", "US_Men": 5.5, "US_Women": 6.5, "UK": 5.0, "EU": 37.0},
-        {"品牌": "BEAXIS", "鞋款": "日日鞋", "規格": "JP(cm)", "腳型": "希臘腳", "尺寸": "M", "最小腳長": 23.5, "最大腳長": 24.0, "鞋內腳長": 24.5, "腳寬": 7.9, "腳圍": 22.7, "備註": "示例數據，請以正式表為準", "US_Men": 6.5, "US_Women": 7.5, "UK": 6.0, "EU": 38.0},
-        {"品牌": "BEAXIS", "鞋款": "日日鞋", "規格": "JP(cm)", "腳型": "希臘腳", "尺寸": "L", "最小腳長": 24.0, "最大腳長": 25.0, "鞋內腳長": 25.0, "腳寬": 8.1, "腳圍": 23.0, "備註": "示例數據，請以正式表為準", "US_Men": 7.0, "US_Women": 8.0, "UK": 6.5, "EU": 39.0},
-        {"品牌": "BEAXIS", "鞋款": "日日鞋", "規格": "JP(cm)", "腳型": "希臘腳", "尺寸": "LL", "最小腳長": 25.5, "最大腳長": 26.0, "鞋內腳長": 27.0, "腳寬": 8.3, "腳圍": 24.7, "備註": "示例數據，請以正式表為準", "US_Men": 9.5, "US_Women": 10.5, "UK": 9.0, "EU": 42.0},
-        {"品牌": "BEAXIS", "鞋款": "日日鞋", "規格": "JP(cm)", "腳型": "希臘腳", "尺寸": "3L", "最小腳長": 26.5, "最大腳長": 27.5, "鞋內腳長": 28.0, "腳寬": 8.5, "腳圍": 25.5, "備註": "示例數據，請以正式表為準", "US_Men": 11.0, "US_Women": 12.0, "UK": 10.5, "EU": 44.0},
-        {"品牌": "BEAXIS", "鞋款": "日日鞋", "規格": "JP(cm)", "腳型": "希臘腳", "尺寸": "4L", "最小腳長": 27.5, "最大腳長": 28.0, "鞋內腳長": 29.0, "腳寬": 8.7, "腳圍": 26.2, "備註": "示例數據，請以正式表為準", "US_Men": 12.0, "US_Women": 13.0, "UK": 11.5, "EU": 45.0}
+    // --- 資料庫 (已根據最新對照表修正) ---
+    const egyptianFootChart = [
+        { us_men: 4.5, us_women: 6, uk: 4, eu: 36.5, cm: 22.4, size: 'S', foot_width: 7.7 },
+        { us_men: 5, us_women: 6.5, uk: 4.5, eu: 37.5, cm: 22.9, size: 'S', foot_width: 7.7 },
+        { us_men: 5.5, us_women: 7, uk: 5, eu: 38, cm: 23.3, size: 'M', foot_width: 7.9 },
+        { us_men: 6, us_women: 7.5, uk: 5.5, eu: 38.5, cm: 23.7, size: 'M', foot_width: 7.9 },
+        { us_men: 6.5, us_women: 8, uk: 6, eu: 39, cm: 24.1, size: 'L', foot_width: 8.1 },
+        { us_men: 7, us_women: 8.5, uk: 6.5, eu: 40, cm: 24.5, size: 'L', foot_width: 8.1 },
+        { us_men: 7.5, us_women: 9, uk: 7, eu: 40.5, cm: 25.0, size: 'L', foot_width: 8.1 },
+        { us_men: 8, us_women: 9.5, uk: 7.5, eu: 41, cm: 25.4, size: 'LL', foot_width: 8.3 },
+        { us_men: 8.5, us_women: 10, uk: 8, eu: 42, cm: 25.8, size: 'LL', foot_width: 8.3 },
+        { us_men: 9, us_women: 10.5, uk: 8.5, eu: 42.5, cm: 26.2, size: 'LL', foot_width: 8.3 },
+        { us_men: 9.5, us_women: 11, uk: 9, eu: 43, cm: 26.7, size: '3L', foot_width: 8.5 },
+        { us_men: 10, us_women: 11.5, uk: 9.5, eu: 44, cm: 27.1, size: '3L', foot_width: 8.5 },
+        { us_men: 10.5, us_women: 12, uk: 10, eu: 44.5, cm: 27.5, size: '3L', foot_width: 8.5 },
+        { us_men: 11, us_women: 12.5, uk: 10.5, eu: 45, cm: 27.9, size: '4L', foot_width: 8.7 },
+        { us_men: 11.5, us_women: 13, uk: 11, eu: 45.5, cm: 28.3, size: '4L', foot_width: 8.7 },
     ];
+    const greekFootChart = [
+        { us_men: 4.5, us_women: 6, uk: 4, eu: 36.5, cm: 22.4, size: 'S', foot_width: 7.7 },
+        { us_men: 5, us_women: 6.5, uk: 4.5, eu: 37.5, cm: 22.9, size: 'S', foot_width: 7.7 },
+        { us_men: 5.5, us_women: 7, uk: 5, eu: 38, cm: 23.3, size: 'S', foot_width: 7.7 },
+        { us_men: 6, us_women: 7.5, uk: 5.5, eu: 38.5, cm: 23.7, size: 'M', foot_width: 7.9 },
+        { us_men: 6.5, us_women: 8, uk: 6, eu: 39, cm: 24.1, size: 'M', foot_width: 7.9 },
+        { us_men: 7, us_women: 8.5, uk: 6.5, eu: 40, cm: 24.5, size: 'L', foot_width: 8.1 },
+        { us_men: 7.5, us_women: 9, uk: 7, eu: 40.5, cm: 25.0, size: 'L', foot_width: 8.1 },
+        { us_men: 8, us_women: 9.5, uk: 7.5, eu: 41, cm: 25.4, size: 'L', foot_width: 8.1 },
+        { us_men: 8.5, us_women: 10, uk: 8, eu: 42, cm: 25.8, size: 'LL', foot_width: 8.3 },
+        { us_men: 9, us_women: 10.5, uk: 8.5, eu: 42.5, cm: 26.2, size: 'LL', foot_width: 8.3 },
+        { us_men: 9.5, us_women: 11, uk: 9, eu: 43, cm: 26.7, size: '3L', foot_width: 8.5 },
+        { us_men: 10, us_women: 11.5, uk: 9.5, eu: 44, cm: 27.1, size: '3L', foot_width: 8.5 },
+        { us_men: 10.5, us_women: 12, uk: 10, eu: 44.5, cm: 27.5, size: '3L', foot_width: 8.5 },
+        { us_men: 11, us_women: 12.5, uk: 10.5, eu: 45, cm: 27.9, size: '4L', foot_width: 8.7 },
+        { us_men: 11.5, us_women: 13, uk: 11, eu: 45.5, cm: 28.3, size: '4L', foot_width: 8.7 },
+        { us_men: 12, us_women: 13.5, uk: 11.5, eu: 46, cm: 28.8, size: '4L', foot_width: 8.7 },
+        { us_men: 12.5, us_women: 14, uk: 12, eu: 47, cm: 29.2, size: '4L', foot_width: 8.7 },
+    ];
+    const footWidthImages = {
+        egyptian: 'https://i.postimg.cc/bN7ZFQNp/image.png',
+        greek: 'https://i.postimg.cc/W1xw8Dxk/image.png'
+    };
 
+    // --- DOM 元素 ---
+    const footTypeSelect = document.getElementById('foot-type');
     const sizeSystemSelect = document.getElementById('size-system');
     const sizeValueSelect = document.getElementById('size-value-select');
+    const footWidthImageContainer = document.getElementById('foot-width-image-container');
     const sizeOrder = ['S', 'M', 'L', 'LL', '3L', '4L'];
 
+    // --- 函數 ---
     function generateRange(start, end, step) {
         const range = [];
         for (let i = start; i <= end + 0.01; i += step) {
-            range.push(parseFloat(i.toFixed(1)));
+            range.push(parseFloat(i.toFixed(2)));
         }
         return range;
     }
@@ -118,30 +154,43 @@
     function updateSizeOptions() {
         const selectedSystem = sizeSystemSelect.value;
         let availableSizes = [];
+        
+        sizeValueSelect.innerHTML = '<option value="" disabled selected>請選擇您的尺碼</option>';
+        if (!selectedSystem) return;
+
         switch (selectedSystem) {
-            case 'JP':
-                availableSizes = generateRange(22.5, 29, 0.5);
+            case 'cm':
+                availableSizes = generateRange(22.4, 29.2, 0.1);
                 break;
-            case 'EU':
-                availableSizes = generateRange(37, 45, 1);
+            case 'eu':
+                availableSizes = generateRange(36.5, 47, 0.5);
                 break;
-            case 'US_Men':
-                availableSizes = generateRange(5.5, 12, 0.5);
+            case 'us_men':
+                availableSizes = generateRange(4.5, 12.5, 0.5);
                 break;
-            case 'US_Women':
-                availableSizes = generateRange(6.5, 13, 0.5);
+            case 'us_women':
+                availableSizes = generateRange(6, 14, 0.5);
                 break;
-            case 'UK':
-                availableSizes = generateRange(5, 11.5, 0.5);
+            case 'uk':
+                availableSizes = generateRange(4, 12, 0.5);
                 break;
         }
-        sizeValueSelect.innerHTML = '';
+        
         availableSizes.forEach(size => {
             const option = document.createElement('option');
             option.value = size;
             option.textContent = size;
             sizeValueSelect.appendChild(option);
         });
+    }
+
+    function updateFootWidthImage() {
+        const selectedFootType = footTypeSelect.value;
+        if (selectedFootType && footWidthImages[selectedFootType]) {
+            footWidthImageContainer.innerHTML = `<img src="${footWidthImages[selectedFootType]}" alt="腳寬測量示意圖" class="rounded-lg mx-auto w-full max-w-xs mt-2">`;
+        } else {
+            footWidthImageContainer.innerHTML = '';
+        }
     }
 
     function getAdjacentSize(currentSize, direction) {
@@ -152,39 +201,27 @@
         if (newIndex >= sizeOrder.length) newIndex = sizeOrder.length - 1;
         return sizeOrder[newIndex];
     }
-
-    /**
-     * 核心推薦邏輯：尋找最接近的大一號
-     * @param {number} targetSize - 目標尺寸
-     * @param {string} sizeSystem - 尺碼系統
-     * @param {string} footType - 腳型
-     * @returns {object|null} - 最佳匹配的鞋子物件
-     */
-    function findBestMatch(targetSize, sizeSystem, footType) {
-        let potentialMatches = [];
-        const sizeKey = sizeSystem === 'JP' ? '鞋內腳長' : sizeSystem;
-
-        for (const shoe of shoeData) {
-            if (shoe['腳型'] === footType && shoe[sizeKey] >= targetSize) {
-                potentialMatches.push(shoe);
-            }
-        }
-
+    
+    function findBestMatch(targetSize, sizeSystem, chart) {
+        let potentialMatches = chart.filter(row => row[sizeSystem] >= targetSize);
         if (potentialMatches.length > 0) {
-            potentialMatches.sort((a, b) => a[sizeKey] - b[sizeKey]);
+            potentialMatches.sort((a, b) => a[sizeSystem] - b[sizeSystem]);
             return potentialMatches[0];
         } else {
-            const allSizesForFootType = shoeData.filter(shoe => shoe['腳型'] === footType);
-            if (allSizesForFootType.length > 0) {
-                allSizesForFootType.sort((a, b) => b[sizeKey] - a[sizeKey]);
-                return allSizesForFootType[0];
-            }
+            return chart[chart.length - 1];
         }
-        return null;
     }
 
-
+    /**
+     * 核心推薦邏輯
+     */
     function getRecommendation() {
+        const form = document.getElementById('size-form');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
         const footType = document.getElementById('foot-type').value;
         const sizeSystem = document.getElementById('size-system').value;
         const userSize = parseFloat(sizeValueSelect.value);
@@ -195,60 +232,80 @@
         recommendationContainer.innerHTML = '';
         alternativeContainer.innerHTML = '';
 
-        if (isNaN(userSize)) {
-            recommendationContainer.innerHTML = `<div class="fade-in p-4 rounded-md bg-red-50 border border-red-200"><p class="text-sm font-medium text-red-700">請先選擇您的尺碼！</p></div>`;
-            return;
-        }
+        const chart = footType === 'egyptian' ? egyptianFootChart : greekFootChart;
+        const primaryMatch = findBestMatch(userSize, sizeSystem, chart);
 
-        const primaryMatch = findBestMatch(userSize, sizeSystem, footType);
-        
         if (primaryMatch) {
+            const finalSize = primaryMatch.size;
+            const recommendationNote = "※ 此結果是根據 Nike 中性鞋款尺寸表配對的建議，僅供參考。實際合穿度可能因個人腳型、腳板寬度、足弓高低及穿著習慣等因素而異，並非最終購買依據。";
+
+            // 顯示主要推薦結果
             recommendationContainer.innerHTML = `
                 <div class="fade-in">
                     <h4 class="text-gray-600 font-medium">綜合您的資訊，推薦您選擇：</h4>
-                    <p class="text-5xl font-bold text-orange-500 mt-2">${primaryMatch['尺寸']}</p>
+                    <p class="text-5xl font-bold text-orange-500 mt-2">${finalSize}</p>
+                    <p class="text-xs text-gray-400 mt-4 text-center">${recommendationNote}</p>
                 </div>
             `;
-            
+
+            // 產生並顯示進階建議
             let alternativeHTML = '<div class="fade-in mt-6 pt-6 border-t border-gray-200"><h5 class="text-lg font-semibold text-gray-700 text-center mb-4">進階尺寸建議</h5><ul class="space-y-3 text-sm text-left">';
             
-            // 腳寬建議 (此邏輯維持不變，基於主要推薦結果做調整)
+            // 腳寬建議
             if (!isNaN(userFootWidth) && userFootWidth > 0) {
-                const standardWidth = primaryMatch['腳寬'];
+                const standardWidth = primaryMatch.foot_width;
                 if (userFootWidth > standardWidth) {
-                    const biggerSize = getAdjacentSize(primaryMatch['尺寸'], 1);
-                    alternativeHTML += `<li><p><span class="font-semibold text-orange-600">腳板偏寬:</span> 您的腳寬大於此尺寸的標準寬度(${standardWidth}cm)，建議選擇 <strong class="text-orange-600">${biggerSize}</strong></p></li>`;
-                }
-                if (userFootWidth < standardWidth) {
-                    const smallerSize = getAdjacentSize(primaryMatch['尺寸'], -1);
-                    alternativeHTML += `<li><p><span class="font-semibold text-slate-600">腳板偏窄:</span> 您的腳寬小於此尺寸的標準寬度(${standardWidth}cm)，建議選擇 <strong class="text-slate-600">${smallerSize}</strong></p></li>`;
+                    const biggerSize = getAdjacentSize(primaryMatch.size, 1);
+                    alternativeHTML += `<li><p><span class="font-semibold text-orange-600">腳板偏寬:</span> 您的腳寬(${userFootWidth}cm)大於標準值，建議選擇 <strong class="text-orange-600">${biggerSize}</strong></p></li>`;
                 }
             }
 
-            // 穿著感建議 (使用新的計算邏輯)
-            const looseTargetSize = userSize + 0.5;
-            const snugTargetSize = userSize - 0.5;
+            // 穿著感建議
+            let step;
+            if (sizeSystem === 'eu') { step = 0.5; } 
+            else if (sizeSystem === 'cm') { step = 0.1; }
+            else { step = 0.5; }
 
-            const looseMatch = findBestMatch(looseTargetSize, sizeSystem, footType);
-            const snugMatch = findBestMatch(snugTargetSize, sizeSystem, footType);
+            const nextStandardSize = userSize + step;
+            const looseMatchForCheck = findBestMatch(nextStandardSize, sizeSystem, chart);
+            
+            const prevStandardSize = userSize - step;
+            const snugMatchForCheck = findBestMatch(prevStandardSize, sizeSystem, chart);
 
-            if (looseMatch) {
-                 alternativeHTML += `<li><p><span class="font-semibold">想要寬鬆感:</span> 建議選擇 <strong class="text-gray-800">${looseMatch['尺寸']}</strong></p></li>`;
+            const isLooseSame = looseMatchForCheck && looseMatchForCheck.size === primaryMatch.size;
+            const isSnugSame = snugMatchForCheck && snugMatchForCheck.size === primaryMatch.size;
+
+            if (isLooseSame && isSnugSame) {
+                alternativeHTML += `<li><p><span class="font-semibold">穿著感:</span> 您的尺寸位於標準範圍，尺寸剛好無須調整。</p></li>`;
+            } else {
+                if (!isLooseSame) {
+                     alternativeHTML += `<li><p><span class="font-semibold">想要寬鬆感:</span> 建議選擇 <strong class="text-gray-800">${looseMatchForCheck.size}</strong></p></li>`;
+                } else {
+                     alternativeHTML += `<li><p><span class="font-semibold">想要寬鬆感:</span> 目前尺寸已較寬鬆，無須調整</p></li>`;
+                }
+
+                if (!isSnugSame) {
+                     alternativeHTML += `<li><p><span class="font-semibold">想要合腳感:</span> 建議選擇 <strong class="text-gray-800">${snugMatchForCheck.size}</strong></p></li>`;
+                } else {
+                     alternativeHTML += `<li><p><span class="font-semibold">想要合腳感:</span> 目前尺碼已較合腳，無須調整</p></li>`;
+                }
             }
-            if (snugMatch) {
-                 alternativeHTML += `<li><p><span class="font-semibold">想要合腳感:</span> 建議選擇 <strong class="text-gray-800">${snugMatch['尺寸']}</strong> (小半碼)</p></li>`;
-            }
 
-            alternativeHTML += '</ul><p class="text-xs text-gray-400 mt-4 text-center">※ 此為系統建議，實際尺寸仍可能因個人腳型差異而略有不同。</p></div>';
+            alternativeHTML += '</ul></div>';
             alternativeContainer.innerHTML = alternativeHTML;
 
         } else {
-            recommendationContainer.innerHTML = `<div class="fade-in p-4 rounded-md bg-yellow-50 border border-yellow-200"><p class="text-sm font-medium text-yellow-700">暫時找不到完全匹配的尺寸，建議聯繫客服人員為您服務。</p></div>`;
+            recommendationContainer.innerHTML = `<div class="fade-in p-4 rounded-md bg-yellow-50 border border-yellow-200"><p class="text-sm font-medium text-yellow-700">暫時找不到匹配的尺寸，建議聯繫客服人員為您服務。</p></div>`;
         }
     }
 
+    // --- 事件監聽 ---
     sizeSystemSelect.addEventListener('change', updateSizeOptions);
-    document.addEventListener('DOMContentLoaded', updateSizeOptions);
+    footTypeSelect.addEventListener('change', updateFootWidthImage);
+    document.addEventListener('DOMContentLoaded', () => {
+        updateSizeOptions();
+        updateFootWidthImage(); // 初始載入時也檢查一次
+    });
 
 </script>
 
